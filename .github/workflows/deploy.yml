@@ -18,7 +18,7 @@ jobs:
       - name: Deploy nabeeh-admin
         run: |
           ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no exe.dev \
-            "ssh tagooza 'cd /home/exedev/nabeeh-admin && git pull origin main && docker compose -f docker-compose.prod.yml build --no-cache && docker compose -f docker-compose.prod.yml up -d'"
+            "ssh tagooza 'cd /home/exedev/nabeeh-admin && git pull origin main && docker compose -f docker-compose.prod.yml pull && docker compose -f docker-compose.prod.yml build && docker compose -f docker-compose.prod.yml up -d --remove-orphans'"
 
       - name: Verify container
         run: |
