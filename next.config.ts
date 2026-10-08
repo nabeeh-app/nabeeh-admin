@@ -9,7 +9,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: https:",
       "font-src 'self'",
-      "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in",
+      "connect-src 'self' https://api.nabeeh.app https://*.onrender.com https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in",
       "frame-src 'none'",
       "object-src 'none'",
       "base-uri 'self'",
