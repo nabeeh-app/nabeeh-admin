@@ -45,12 +45,12 @@ export async function logAdminAction(
 export async function requireAdmin(
   _request: Request,
   options?: { requireModify?: boolean }
-): Promise<AdminUser> {
+): Promise<AdminUser | NextResponse> {
   const cookieStore = await cookies();
   const token = cookieStore.get('admin-session')?.value;
 
   if (!token) {
-    throw NextResponse.json(
+    return NextResponse.json(
       { success: false, message: 'Authentication required', code: 'AUTH_REQUIRED' },
       { status: 401 }
     );
@@ -59,7 +59,7 @@ export async function requireAdmin(
   const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
 
   if (authError || !user) {
-    throw NextResponse.json(
+    return NextResponse.json(
       { success: false, message: 'Invalid or expired session', code: 'INVALID_SESSION' },
       { status: 401 }
     );
@@ -68,14 +68,14 @@ export async function requireAdmin(
   const adminUser = await getAdminUser(user.id);
 
   if (!adminUser) {
-    throw NextResponse.json(
+    return NextResponse.json(
       { success: false, message: 'Not an admin user', code: 'NOT_ADMIN' },
       { status: 403 }
     );
   }
 
   if (options?.requireModify && !canModify(adminUser.role)) {
-    throw NextResponse.json(
+    return NextResponse.json(
       { success: false, message: 'Insufficient permissions', code: 'FORBIDDEN' },
       { status: 403 }
     );

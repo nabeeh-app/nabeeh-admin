@@ -9,7 +9,8 @@ const updateTicketSchema = z.object({
 });
 
 export async function GET(request: Request) {
-  await requireAdmin(request);
+  const auth = await requireAdmin(request);
+  if (auth instanceof NextResponse) return auth;
   const { searchParams } = new URL(request.url);
   const status = searchParams.get('status');
   const id = searchParams.get('id');
@@ -32,7 +33,9 @@ export async function GET(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const admin = await requireAdmin(request, { requireModify: true });
+  const auth = await requireAdmin(request, { requireModify: true });
+  if (auth instanceof NextResponse) return auth;
+  const admin = auth;
   const body = await request.json();
   const parsed = updateTicketSchema.safeParse(body);
 

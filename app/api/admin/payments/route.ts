@@ -17,7 +17,8 @@ const createPaymentSchema = z.object({
 });
 
 export async function GET(request: Request) {
-  await requireAdmin(request);
+  const auth = await requireAdmin(request);
+  if (auth instanceof NextResponse) return auth;
   const { searchParams } = new URL(request.url);
   const status = searchParams.get('status') || 'pending';
   const method = searchParams.get('method');
@@ -42,7 +43,9 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const admin = await requireAdmin(request, { requireModify: true });
+  const auth = await requireAdmin(request, { requireModify: true });
+  if (auth instanceof NextResponse) return auth;
+  const admin = auth;
   const formData = await request.formData();
   const body = Object.fromEntries(formData.entries());
 
@@ -114,7 +117,9 @@ export async function POST(request: Request) {
 }
 
 export async function PATCH(request: Request) {
-  const admin = await requireAdmin(request, { requireModify: true });
+  const auth = await requireAdmin(request, { requireModify: true });
+  if (auth instanceof NextResponse) return auth;
+  const admin = auth;
   const body = await request.json();
   const parsed = updatePaymentSchema.safeParse(body);
 

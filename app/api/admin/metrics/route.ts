@@ -5,7 +5,8 @@ import { supabaseAdmin } from '@/lib/supabase';
 const TIER_PRICES: Record<string, number> = { free: 0, basic: 99, pro: 249, center: 599 };
 
 export async function GET(request: Request) {
-  await requireAdmin(request);
+  const auth = await requireAdmin(request);
+  if (auth instanceof NextResponse) return auth;
   const [teachers, subscriptions, students, payments, aiUsage] = await Promise.all([
     supabaseAdmin.from('teachers').select('id', { count: 'exact', head: true }),
     supabaseAdmin.from('subscriptions').select('teacher_id, tier, status, created_at'),

@@ -3,7 +3,8 @@ import { requireAdmin } from '@/lib/admin-auth';
 import { supabaseAdmin } from '@/lib/supabase';
 
 export async function GET(request: Request) {
-  await requireAdmin(request);
+  const auth = await requireAdmin(request);
+  if (auth instanceof NextResponse) return auth;
   const { searchParams } = new URL(request.url);
   const period = searchParams.get('period') || 'month';
 
