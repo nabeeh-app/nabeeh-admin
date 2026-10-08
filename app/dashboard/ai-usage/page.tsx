@@ -57,7 +57,7 @@ export default function AiUsagePage() {
       {loading ? (
         <LoadingSpinner />
       ) : (
-        <div className="bg-canvas border border-ink/10 overflow-hidden">
+        <div className="bg-canvas border border-ink/10 overflow-x-auto">
           <table className="w-full text-sm">
             <thead className="border-b border-ink/10">
               <tr>

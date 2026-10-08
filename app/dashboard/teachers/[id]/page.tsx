@@ -95,7 +95,7 @@ export default function TeacherDetailPage() {
       />
 
       {/* Payments */}
-      <div className="border border-ink/10 overflow-hidden">
+      <div className="border border-ink/10 overflow-x-auto">
         <div className="p-4 border-b border-ink/10">
           <h2 className="font-semibold text-ink font-display">Recent Payments</h2>
         </div>
